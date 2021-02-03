@@ -3,9 +3,13 @@ import time
 import random
 
 def loader(*args):
-    with open ("api_input.json") as f:
-        payload = json.load(f)
-    return payload
+    try:
+        with open ("api_input.json", "r") as f:
+            payload = json.loads(f.read())
+            return payload
+    except ValueError as e:
+        print(f"ERROR: JSON not valid ... {e}")
+    
 
 def manipulator(*args):
     command = ["scan","patch"]
@@ -25,8 +29,19 @@ def manipulator(*args):
             v["command_id"] = str(random.randint(0  , 10**8))+"-example" 
 
         empty.append(v)
+    payload = json.dumps(empty)
     print(json.dumps(empty, indent=4, sort_keys=True))
-
+    nlist = []
+    for p in json.loads(payload):
+        for i, v in p.items():
+            if p[i] == "":
+                nlist.append(i)
+            else:
+                pass
     
+    if nlist:
+        print("Warning: The following keys are missing values ", nlist)
+
+
 if __name__ == "__main__":
     manipulator()
