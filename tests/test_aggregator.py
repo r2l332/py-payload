@@ -7,30 +7,24 @@ import data_aggregator
 FILE = os.getcwd()+"/"+"api_input.json"
 
 def test_file_name():
-    try: 
-        file_exists = os.path.isfile(FILE)
-        assert file_exists == True
-        test_json()
-    except FileNotFoundError as e:
-        assert file_exists != False
+    file_exists = os.path.isfile(FILE)
+    assert file_exists == True, "File exists"
+    test_json()
             
 def test_json():
-    try:
+    with pytest.raises(Exception) as e_info:
         with open(FILE, "r") as f:
-            payload = json.loads(f.read())
-    except ValueError:
-        assert False, "Not Valid Json"
-    else:
-        assert True
+            if json.loads(f.read()):
+                payload = True
+        raise
+    assert payload == True
+
 
 def test_epoch(grab_returns):
     somelist = []
-    try:
-        test_epoch_time = int(time.time())
-        errs, account_num, dumps, epoch_time = grab_returns
-        assert epoch_time == epoch_time
-    except:
-        assert False, "Epoch time failing..."
+    test_epoch_time = int(time.time())
+    errs, account_num, dumps, epoch_time = grab_returns
+    assert epoch_time == epoch_time
 
 @pytest.fixture
 def grab_returns():
