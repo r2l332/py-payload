@@ -30,3 +30,5 @@ def test_epoch(grab_returns):
 def grab_returns():
     errs, account_num, dumps, epoch_time = data_aggregator.manipulator()
     return errs, account_num, dumps, epoch_time
+
+# End tests
